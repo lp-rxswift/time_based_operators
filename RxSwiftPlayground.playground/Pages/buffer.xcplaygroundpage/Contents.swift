@@ -35,9 +35,11 @@ hostView
 //}
 
 let elementsPerSecond = 0.7
-let timer = DispatchSource.timer(interval: 1.0 /
-Double(elementsPerSecond), queue: .main) {
-sourceObservable.onNext("🐱") }
+let timer = DispatchSource
+  .timer(interval: 1.0 / Double(elementsPerSecond),
+         queue: .main) {
+  sourceObservable.onNext("🐱")
+}
 
 // Support code -- DO NOT REMOVE
 public class TimelineView<E>: TimelineViewBase, ObserverType where E: CustomStringConvertible {
