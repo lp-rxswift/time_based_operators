@@ -3,6 +3,34 @@ import RxSwift
 import RxCocoa
 
 // Start coding here
+let bufferTimeSpan: RxTimeInterval = .seconds(4)
+let bufferMaxCount = 2
+let sourceObservable = PublishSubject<String>()
+let sourceTimeline = TimelineView<String>.make()
+let bufferedTimeline = TimelineView<Int>.make()
+
+let stack = UIStackView.makeVertical([
+  UILabel.makeTitle("buffer"),
+  UILabel.make("Emitted elements:"),
+  sourceTimeline,
+  UILabel.make("Buffered elements (at most \(bufferMaxCount) every \(bufferTimeSpan) seconds):"),
+  bufferedTimeline])
+
+_ = sourceObservable.subscribe(sourceTimeline)
+
+sourceObservable
+  .buffer(timeSpan: bufferTimeSpan, count: bufferMaxCount,
+          scheduler: MainScheduler.instance)
+  .map(\.count)
+  .subscribe(bufferedTimeline)
+
+let hostView = setupHostView()
+hostView.addSubview(stack)
+hostView
+
+DispatchQueue.main.asyncAfter(deadline: .now() + 5) { sourceObservable.onNext("🐱")
+sourceObservable.onNext("🐱")
+sourceObservable.onNext("🐱") }
 
 // Support code -- DO NOT REMOVE
 public class TimelineView<E>: TimelineViewBase, ObserverType where E: CustomStringConvertible {
