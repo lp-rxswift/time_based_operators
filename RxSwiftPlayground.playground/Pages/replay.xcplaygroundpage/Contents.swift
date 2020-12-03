@@ -25,6 +25,7 @@ let sourceObservable = Observable<Int>
     }
   }
   .replay(replayedElements)
+  //replayAll()
 
   let stack = UIStackView.makeVertical([
   UILabel.makeTitle("replay"),
