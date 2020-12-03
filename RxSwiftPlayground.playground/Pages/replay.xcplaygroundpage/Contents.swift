@@ -6,6 +6,8 @@ let elementsPerSecond = 1
 let maxElements = 58
 let replayedElements = 1
 let replayDelay: TimeInterval = 3
+let sourceTimeline = TimelineView<Int>.make()
+let replayedTimeline = TimelineView<Int>.make()
 
 let sourceObservable = Observable<Int>
   .create { observer in
@@ -22,6 +24,27 @@ let sourceObservable = Observable<Int>
       timer.suspend()
     }
   }
+  .replay(replayedElements)
+
+  let stack = UIStackView.makeVertical([
+  UILabel.makeTitle("replay"),
+  UILabel.make("Emit \(elementsPerSecond) per second:"),
+  sourceTimeline,
+  UILabel.make("Replay \(replayedElements) after \(replayDelay) sec:"),
+  replayedTimeline])
+
+
+_ = sourceObservable.subscribe(sourceTimeline)
+
+DispatchQueue.main.asyncAfter(deadline: .now() + replayDelay) {
+ _ = sourceObservable.subscribe(replayedTimeline)
+}
+
+sourceObservable.connect()
+let hostView = setupHostView()
+hostView.addSubview(stack)
+hostView
+
 
 
 // Support code -- DO NOT REMOVE
