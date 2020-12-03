@@ -28,8 +28,15 @@ let hostView = setupHostView()
 hostView.addSubview(stack)
 hostView
 
-DispatchQueue.main.asyncAfter(deadline: .now() + 5) { sourceObservable.onNext("🐱")
-sourceObservable.onNext("🐱")
+//DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+//  sourceObservable.onNext("🐱")
+//  sourceObservable.onNext("🐱")
+//  sourceObservable.onNext("🐱")
+//}
+
+let elementsPerSecond = 0.7
+let timer = DispatchSource.timer(interval: 1.0 /
+Double(elementsPerSecond), queue: .main) {
 sourceObservable.onNext("🐱") }
 
 // Support code -- DO NOT REMOVE
