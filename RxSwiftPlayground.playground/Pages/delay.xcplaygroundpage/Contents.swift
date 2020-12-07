@@ -39,7 +39,6 @@ _ = sourceObservable
 //  .subscribe(delayedTimeline)
 
 
-
 let hostView = setupHostView()
 hostView.addSubview(stack)
 hostView
