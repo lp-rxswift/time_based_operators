@@ -27,11 +27,16 @@ _ = sourceObservable.subscribe(sourceTimeline)
 
 
 // Setup the delayed subscription
+
+//miss the events with the delay
 _ = sourceObservable
   .delaySubscription(delay, scheduler: MainScheduler.instance)
   .subscribe(delayedTimeline)
 
-// Start coding here
+//show up all the events with a delay
+//_ = sourceObservable
+//  .delay(delay, scheduler:MainScheduler.instance)
+//  .subscribe(delayedTimeline)
 
 
 
