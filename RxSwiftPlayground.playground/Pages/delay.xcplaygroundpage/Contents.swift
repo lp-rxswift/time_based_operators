@@ -26,17 +26,25 @@ let timer = DispatchSource.timer(interval: 1.0 / Double(elementsPerSecond), queu
 _ = sourceObservable.subscribe(sourceTimeline)
 
 
-// Setup the delayed subscription
+// -> miss the events with the delay
+//_ = sourceObservable
+//  .delaySubscription(delay, scheduler: MainScheduler.instance)
+//  .subscribe(delayedTimeline)
 
-//miss the events with the delay
-_ = sourceObservable
-  .delaySubscription(delay, scheduler: MainScheduler.instance)
-  .subscribe(delayedTimeline)
-
-//show up all the events with a delay
+// -> show up all the events with a delay
 //_ = sourceObservable
 //  .delay(delay, scheduler:MainScheduler.instance)
 //  .subscribe(delayedTimeline)
+
+
+//-> Timer operator
+_ = Observable<Int>
+    .timer(.seconds(3), scheduler: MainScheduler.instance)
+    .flatMap { _ in
+      sourceObservable.delay(delay, scheduler: MainScheduler.instance)
+    }
+    .subscribe(delayedTimeline)
+
 
 
 let hostView = setupHostView()
